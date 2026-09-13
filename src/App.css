@@ -1,8 +1,48 @@
-main {
+.barra-navegacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background-color: var(--color-rojo);
+  color: var(--color-claro);
+}
+
+.barra-navegacion h2 {
+  margin: 0;
+}
+
+.barra-navegacion ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contenedor-productos {
   padding: 2rem;
   text-align: center;
 }
 
-h1 {
+.contenedor-productos h1 {
   color: var(--color-azul);
+}
+
+.carrito {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.cantidad-carrito {
+  background-color: var(--color-amarillo);
+  color: var(--color-oscuro);
+  border-radius: 50%;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: bold;
 }

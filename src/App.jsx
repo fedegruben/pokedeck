@@ -1,11 +1,13 @@
 import './App.css'
+import Navbar from './components/Navbar'
+import ItemListContainer from './components/ItemListContainer'
 
 function App() {
   return (
-    <main>
-      <h1>PokeDeck</h1>
-      <p>Tienda online de cartas Pokémon TCG</p>
-    </main>
+    <>
+      <Navbar />
+      <ItemListContainer greeting="¡Bienvenidos a PokeDeck!" />
+    </>
   )
 }
 

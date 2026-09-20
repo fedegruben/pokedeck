@@ -53,3 +53,19 @@ export const getProducts = () => {
 		}, 2000)
 	})
 }
+
+export const getProductById = (productId) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const productoEncontrado = productos.find(
+        (producto) => producto.id === productId,
+      )
+
+      if (productoEncontrado) {
+        resolve(productoEncontrado)
+      } else {
+        reject(new Error('Producto no encontrado'))
+      }
+    }, 2000)
+  })
+}

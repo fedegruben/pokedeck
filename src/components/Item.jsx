@@ -8,9 +8,8 @@ function Item({ producto }) {
       />
 
       <h2>{producto.name}</h2>
-      <p>{producto.description}</p>
+      <p>Categoría: {producto.category}</p>
       <p>Precio: ${producto.price}</p>
-      <p>Stock: {producto.stock}</p>
     </article>
   )
 }

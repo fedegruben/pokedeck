@@ -34,6 +34,9 @@ Los componentes se encuentran en `src/components`:
 - `ItemListContainer`: obtiene los productos, los guarda en el estado `items` y controla el mensaje de carga.
 - `ItemList`: recibe los productos mediante props y los recorre con `.map()`.
 - `Item`: presenta la información de cada producto en una tarjeta.
+- `ItemDetailContainer`: busca un producto por su identificador, administra la promesa y guarda el resultado en un estado.
+- `ItemDetail`: recibe el producto mediante props y muestra toda su información.
+- `ItemCount`: permite seleccionar una cantidad entre cero y el stock disponible.
 
 ## Carga asíncrona
 
@@ -45,4 +48,12 @@ Mientras se espera la respuesta, la aplicación muestra el mensaje “Cargando p
 
 ## Estado del proyecto
 
-Esta entrega incluye un listado dinámico de productos obtenido desde una promesa local. Las categorías de navegación y el carrito todavía no tienen funcionalidad.
+Esta entrega incluye un listado dinámico de productos y la vista individual de un producto obtenida mediante una promesa dinámica. Las categorías de navegación y el carrito todavía no tienen funcionalidad.
+
+## Detalle de producto
+
+La función `getProductById` recibe un identificador y busca el producto correspondiente dentro del array. La búsqueda simula una consulta asincrónica mediante una promesa y `setTimeout`.
+
+`ItemDetailContainer` ejecuta esta función, administra el estado de carga y los posibles errores, y entrega el producto encontrado a `ItemDetail`.
+
+La vista de detalle muestra la imagen, el nombre, la descripción, la categoría, el precio y el stock del producto. También reutiliza `ItemCount`, que no permite seleccionar una cantidad superior al stock ni inferior a cero.

@@ -1,6 +1,13 @@
+import { useCart } from '../context/CartContext'
 import ItemCount from './ItemCount'
 
 function ItemDetail({ producto }) {
+  const { addItem } = useCart()
+
+  const agregarAlCarrito = (cantidad) => {
+    addItem(producto, cantidad)
+  }
+
   return (
     <article className="detalle-producto">
       <img
@@ -16,7 +23,7 @@ function ItemDetail({ producto }) {
         <p>Precio: ${producto.price}</p>
         <p>Stock disponible: {producto.stock}</p>
 
-        <ItemCount stock={producto.stock} />
+        <ItemCount stock={producto.stock} onAdd={agregarAlCarrito} />
       </div>
     </article>
   )

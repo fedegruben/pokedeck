@@ -31,7 +31,8 @@ npm run dev
 Los componentes se encuentran en `src/components`:
 
 - `Navbar`: muestra el nombre PokeDeck, las categorías y el `CartWidget`.
-- `CartWidget`: muestra un ícono de carrito y una cantidad fija de productos.
+- `CartWidget`: enlaza a la página del carrito y muestra la cantidad total de productos agregadas.
+- `Cart`: muestra los productos agregados, sus subtotales, el total general y las opciones para eliminar o vaciar el carrito.
 - `ItemListContainer`: obtiene los productos, los guarda en el estado `items` y controla el mensaje de carga.
 - `ItemList`: recibe los productos mediante props y los recorre con `.map()`.
 - `Item`: presenta la información de cada producto en una tarjeta.
@@ -41,6 +42,7 @@ Los componentes se encuentran en `src/components`:
 - `Layout`: mantiene visibles el `Navbar` y el `Footer` en todas las rutas.
 - `Footer`: muestra la información de copyright del proyecto.
 - `NotFound`: informa cuando el usuario visita una URL inexistente.
+
 
 ## Carga asíncrona
 
@@ -52,7 +54,7 @@ Mientras se espera la respuesta, la aplicación muestra el mensaje “Cargando p
 
 ## Estado del proyecto
 
-Esta entrega incluye navegación por rutas, filtrado dinámico por colección, detalle individual de productos, layout compartido y manejo de páginas inexistentes. El carrito todavía no tiene funcionalidad.
+Esta entrega incluye navegación por rutas, filtrado por colección, detalle individual y un carrito funcional administrado con Context API.
 
 ## Detalle de producto
 
@@ -72,5 +74,14 @@ Las rutas disponibles son:
 - `/category/:id`: filtra los productos según la colección indicada.
 - `/item/:id`: muestra el detalle del producto seleccionado.
 - `*`: muestra la página de error 404 para una URL inexistente.
+- `/cart`: muestra el contenido actual del carrito de compras.
 
 El catálogo contiene 14 cartas distribuidas entre las colecciones Base Set, Jungle, Fossil y Team Rocket. El menú utiliza `NavLink`, mientras que cada tarjeta utiliza `Link` para acceder al detalle del producto.
+
+## Carrito de compras
+
+El estado del carrito se administra globalmente mediante Context API. `CartProvider` envuelve la aplicación y comparte los productos agregados y las funciones necesarias para agregar, eliminar y vaciar el carrito.
+
+Cuando un producto ya existe, su cantidad se actualiza sin crear una entrada duplicada. El carrito calcula la cantidad total de unidades y el precio total de la compra.
+
+La página del carrito muestra el precio unitario, la cantidad y el subtotal de cada producto. Si está vacío, ofrece un enlace para volver al catálogo. El botón “Finalizar compra” es un placeholder para una etapa posterior.

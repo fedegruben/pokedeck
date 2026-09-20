@@ -135,3 +135,55 @@
     margin: 2rem 1rem;
   }
 }
+
+.marca,
+.enlace-navegacion {
+  color: var(--color-claro);
+  text-decoration: none;
+}
+
+.enlace-navegacion[aria-current="page"] {
+  color: var(--color-amarillo);
+  font-weight: bold;
+}
+
+.enlace-detalle {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 0.25rem;
+  background-color: var(--color-azul);
+  color: white;
+  text-decoration: none;
+}
+
+.pie-pagina {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background-color: var(--color-rojo);
+  color: var(--color-claro);
+  text-align: center;
+}
+
+.pie-pagina p {
+  margin: 0;
+}
+
+.pagina-no-encontrada {
+  min-height: 60vh;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.pagina-no-encontrada h1 {
+  color: var(--color-rojo);
+}
+
+.pagina-no-encontrada a {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  border-radius: 0.25rem;
+  background-color: var(--color-azul);
+  color: white;
+  text-decoration: none;
+}

@@ -1,6 +1,8 @@
 # PokeDeck
 
-PokeDeck es un e-commerce de productos de Pokémon TCG desarrollado como proyecto final del curso de React.
+PokeDeck es un e-commerce de cartas de Pokémon TCG desarrollado como proyecto final del curso de React.
+
+La aplicación permite navegar por el catálogo, filtrar cartas por colección, consultar sus detalles, administrar un carrito, registrar usuarios y generar órdenes de compra.
 
 ## Tecnologías utilizadas
 
@@ -9,14 +11,33 @@ PokeDeck es un e-commerce de productos de Pokémon TCG desarrollado como proyect
 - Vite
 - CSS
 - React Router
+- Firebase Authentication
+- Cloud Firestore
 
 ## Instalación
 
-Para instalar las dependencias del proyecto:
+Para instalar las dependencias:
 
 ```bash
 npm install
 ```
+
+## Variables de entorno
+
+Creá un archivo `.env.local` en la raíz del proyecto con estas variables:
+
+```env
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
+
+Los valores deben obtenerse desde la configuración del proyecto de Firebase.
+
+El archivo con los valores reales está ignorado por Git y no debe subirse al repositorio.
 
 ## Ejecución
 
@@ -26,62 +47,101 @@ Para iniciar la aplicación:
 npm run dev
 ```
 
-## Componentes
+## Funcionalidades
 
-Los componentes se encuentran en `src/components`:
+- Catálogo almacenado en Cloud Firestore.
+- Filtrado de productos por categoría.
+- Detalle individual de cada producto.
+- Carrito administrado con Context.
+- Registro e inicio de sesión con email y contraseña.
+- Persistencia de la sesión con Firebase Authentication.
+- Cierre de sesión.
+- Checkout protegido para usuarios autenticados.
+- Formulario con datos de entrega.
+- Generación de órdenes en Firestore.
+- Confirmación con el ID de la orden.
 
-- `Navbar`: muestra el nombre PokeDeck, las categorías y el `CartWidget`.
-- `CartWidget`: enlaza a la página del carrito y muestra la cantidad total de productos agregadas.
-- `Cart`: muestra los productos agregados, sus subtotales, el total general y las opciones para eliminar o vaciar el carrito.
-- `ItemListContainer`: obtiene los productos, los guarda en el estado `items` y controla el mensaje de carga.
-- `ItemList`: recibe los productos mediante props y los recorre con `.map()`.
-- `Item`: presenta la información de cada producto en una tarjeta.
-- `ItemDetailContainer`: busca un producto por su identificador, administra la promesa y guarda el resultado en un estado.
-- `ItemDetail`: recibe el producto mediante props y muestra toda su información.
-- `ItemCount`: permite seleccionar una cantidad entre cero y el stock disponible.
-- `Layout`: mantiene visibles el `Navbar` y el `Footer` en todas las rutas.
-- `Footer`: muestra la información de copyright del proyecto.
-- `NotFound`: informa cuando el usuario visita una URL inexistente.
+## Rutas
 
+- `/`: catálogo completo.
+- `/category/:id`: productos filtrados por colección.
+- `/item/:id`: detalle de un producto.
+- `/cart`: carrito de compras.
+- `/login`: registro e inicio de sesión.
+- `/checkout`: checkout protegido.
+- `*`: página de error 404.
 
-## Carga asíncrona
+## Firebase Authentication
 
-Los productos están definidos en `src/mock/asyncMock.js`.
+El estado del usuario se administra mediante `AuthContext`.
 
-La función `getProducts` simula una consulta a una API mediante una `Promise` y un `setTimeout` de dos segundos. `ItemListContainer` ejecuta esta función mediante `useEffect`, espera el resultado con `async/await`, filtra los productos cuando cambia la categoría de la URL y guarda el resultado mediante `useState`.
+La aplicación utiliza Firebase Authentication para:
 
-Mientras se espera la respuesta, la aplicación muestra el mensaje “Cargando productos...”. Cuando la promesa se resuelve, se renderiza el listado dinámicamente.
+- Registrar usuarios con email y contraseña.
+- Iniciar sesión.
+- Mantener la sesión al recargar la página.
+- Mostrar el email del usuario autenticado.
+- Cerrar sesión.
 
-## Estado del proyecto
+## Colecciones de Firestore
 
-Esta entrega incluye navegación por rutas, filtrado por colección, detalle individual y un carrito funcional administrado con Context API.
+### products
 
-## Detalle de producto
+Contiene las cartas que se muestran en el catálogo.
 
-La función `getProductById` recibe un identificador y busca el producto correspondiente dentro del array. La búsqueda simula una consulta asincrónica mediante una promesa y `setTimeout`.
+Ejemplo de un documento:
 
-`ItemDetailContainer` ejecuta esta función, administra el estado de carga y los posibles errores, y entrega el producto encontrado a `ItemDetail`.
+```json
+{
+  "name": "Charizard",
+  "description": "Carta holográfica clásica de Charizard.",
+  "price": 18500,
+  "img": "https://images.pokemontcg.io/base1/4_hires.png",
+  "category": "base-set",
+  "stock": 3
+}
+```
 
-La vista de detalle muestra la imagen, el nombre, la descripción, la categoría, el precio y el stock del producto. También reutiliza `ItemCount`, que no permite seleccionar una cantidad superior al stock ni inferior a cero.
+`ItemListContainer` consulta todos los productos o los filtra por categoría mediante `query()` y `where()`.
 
-## Navegación
+`ItemDetailContainer` obtiene un único producto mediante `doc()` y `getDoc()`.
 
-La aplicación utiliza React Router para navegar sin recargar completamente la página.
+### orders
 
-Las rutas disponibles son:
+Contiene las órdenes generadas por los usuarios autenticados.
 
-- `/`: muestra el catálogo completo.
-- `/category/:id`: filtra los productos según la colección indicada.
-- `/item/:id`: muestra el detalle del producto seleccionado.
-- `*`: muestra la página de error 404 para una URL inexistente.
-- `/cart`: muestra el contenido actual del carrito de compras.
+Ejemplo de estructura:
 
-El catálogo contiene 14 cartas distribuidas entre las colecciones Base Set, Jungle, Fossil y Team Rocket. El menú utiliza `NavLink`, mientras que cada tarjeta utiliza `Link` para acceder al detalle del producto.
+```json
+{
+  "usuario": {
+    "id": "ID_DEL_USUARIO",
+    "email": "usuario@ejemplo.com"
+  },
+  "comprador": {
+    "nombre": "Nombre",
+    "apellido": "Apellido",
+    "telefono": "123456789",
+    "direccion": "Dirección de ejemplo",
+    "ciudad": "Ciudad"
+  },
+  "productos": [
+    {
+      "id": "1",
+      "nombre": "Charizard",
+      "precio": 18500,
+      "cantidad": 1
+    }
+  ],
+  "total": 18500,
+  "fecha": "Timestamp generado por Firebase"
+}
+```
 
-## Carrito de compras
+La orden se crea mediante `addDoc()` y utiliza `serverTimestamp()` para guardar la fecha.
 
-El estado del carrito se administra globalmente mediante Context API. `CartProvider` envuelve la aplicación y comparte los productos agregados y las funciones necesarias para agregar, eliminar y vaciar el carrito.
+El carrito se vacía solamente después de que Firebase crea correctamente la orden.
 
-Cuando un producto ya existe, su cantidad se actualiza sin crear una entrada duplicada. El carrito calcula la cantidad total de unidades y el precio total de la compra.
+## Seguridad
 
-La página del carrito muestra el precio unitario, la cantidad y el subtotal de cada producto. Si está vacío, ofrece un enlace para volver al catálogo. El botón “Finalizar compra” es un placeholder para una etapa posterior.
+Las reglas de Firestore permiten leer el catálogo, impiden modificar los productos desde la aplicación y permiten crear órdenes únicamente a usuarios autenticados.

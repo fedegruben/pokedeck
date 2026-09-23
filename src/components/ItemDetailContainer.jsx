@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getProductById } from '../mock/asyncMock'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '../firebase/config'
 import ItemDetail from './ItemDetail'
 
 function ItemDetailContainer() {
@@ -14,10 +15,20 @@ function ItemDetailContainer() {
       setError('')
 
       try {
-        const productoEncontrado = await getProductById(productId)
-        setProducto(productoEncontrado)
-      } catch (errorEncontrado) {
-        setError(errorEncontrado.message)
+        const referenciaProducto = doc(db, 'products', productId)
+        const documentoProducto = await getDoc(referenciaProducto)
+
+        if (!documentoProducto.exists()) {
+          throw new Error('Producto no encontrado')
+        }
+
+        setProducto({
+          id: documentoProducto.id,
+          ...documentoProducto.data(),
+        })
+      } catch (errorConsulta) {
+        console.error(errorConsulta)
+        setError('No se pudo cargar el producto.')
       }
     }
 

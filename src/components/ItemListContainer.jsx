@@ -1,25 +1,45 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getProducts } from '../mock/asyncMock'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { db } from '../firebase/config'
 import ItemList from './ItemList'
 
 function ItemListContainer({ greeting }) {
   const { id: categoryId } = useParams()
   const [items, setItems] = useState([])
   const [cargando, setCargando] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     const cargarProductos = async () => {
       setCargando(true)
+      setError('')
 
-      const productos = await getProducts()
+      try {
+        const referenciaProductos = collection(db, 'products')
 
-      const productosFiltrados = categoryId
-        ? productos.filter((producto) => producto.category === categoryId)
-        : productos
+        const consulta = categoryId
+          ? query(
+              referenciaProductos,
+              where('category', '==', categoryId),
+            )
+          : referenciaProductos
 
-      setItems(productosFiltrados)
-      setCargando(false)
+        const respuesta = await getDocs(consulta)
+
+        const productos = respuesta.docs.map((documento) => ({
+          id: documento.id,
+          ...documento.data(),
+        }))
+
+        setItems(productos)
+      } catch (errorConsulta) {
+        console.error(errorConsulta)
+        setItems([])
+        setError('No se pudieron cargar los productos.')
+      } finally {
+        setCargando(false)
+      }
     }
 
     cargarProductos()
@@ -31,6 +51,8 @@ function ItemListContainer({ greeting }) {
 
       {cargando ? (
         <p>Cargando productos...</p>
+      ) : error ? (
+        <p>{error}</p>
       ) : items.length === 0 ? (
         <p>No se encontraron productos en esta categoría.</p>
       ) : (

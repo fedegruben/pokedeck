@@ -44,7 +44,7 @@ function Cart() {
 					Vaciar carrito
 				</button>
 
-				<button type="button">Finalizar compra</button>
+				<Link to="/checkout">Finalizar compra</Link>
 			</div>
 		</main>
 	)

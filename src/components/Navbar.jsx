@@ -1,7 +1,10 @@
 import { NavLink } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import CartWidget from './CartWidget'
 
 function Navbar() {
+  const { usuario, cerrarSesion } = useAuth()
+
   return (
     <nav className="barra-navegacion">
       <NavLink className="marca" to="/" end>
@@ -31,7 +34,22 @@ function Navbar() {
         </li>
       </ul>
 
-      <CartWidget />
+      <div className="usuario-navegacion">
+        {usuario ? (
+          <>
+            <span>{usuario.email}</span>
+            <button type="button" onClick={cerrarSesion}>
+              Cerrar sesión
+            </button>
+          </>
+        ) : (
+          <NavLink className="enlace-navegacion" to="/login">
+            Ingresar
+          </NavLink>
+        )}
+
+        <CartWidget />
+      </div>
     </nav>
   )
 }

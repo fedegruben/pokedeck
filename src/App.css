@@ -271,3 +271,109 @@
     flex-direction: column;
   }
 }
+
+.usuario-navegacion {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.usuario-navegacion button {
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: var(--color-claro);
+  color: var(--color-rojo);
+  cursor: pointer;
+}
+
+.autenticacion,
+.pagina-checkout,
+.compra-confirmada {
+  max-width: 600px;
+  min-height: 60vh;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.autenticacion h1,
+.pagina-checkout h1,
+.compra-confirmada h1 {
+  color: var(--color-azul);
+  text-align: center;
+}
+
+.autenticacion form,
+.pagina-checkout form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border: 2px solid var(--color-plata);
+  border-radius: 0.75rem;
+  background-color: white;
+}
+
+.autenticacion input,
+.pagina-checkout input {
+  padding: 0.75rem;
+  border: 1px solid var(--color-plata);
+  border-radius: 0.25rem;
+}
+
+.autenticacion button,
+.pagina-checkout button,
+.acciones-carrito a {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: var(--color-azul);
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.autenticacion button:disabled,
+.pagina-checkout button:disabled {
+  background-color: var(--color-plata);
+  cursor: not-allowed;
+}
+
+.pagina-checkout section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 2px solid var(--color-plata);
+  border-radius: 0.75rem;
+  background-color: white;
+}
+
+.compra-confirmada {
+  text-align: center;
+}
+
+.compra-confirmada strong {
+  display: block;
+  margin: 1rem 0;
+  overflow-wrap: anywhere;
+}
+
+.compra-confirmada a {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  border-radius: 0.25rem;
+  background-color: var(--color-azul);
+  color: white;
+  text-decoration: none;
+}
+
+.autenticacion > p:last-child,
+.pagina-checkout > p:last-child {
+  color: var(--color-rojo);
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .usuario-navegacion {
+    flex-wrap: wrap;
+  }
+}
